@@ -14,7 +14,7 @@
 
  */
 
-//const int pingPin = 7;
+const int TONE_PIN=4;
 const int US_TRIG_PIN=5;
 const int US_ECHO_PIN=6;
 
@@ -43,18 +43,29 @@ void loop(){
   // of the ping to the reception of its echo off of an object.
   duration=pulseIn(US_ECHO_PIN, HIGH);
 
-  // convert the time into a distance
-  //distance=microsecondsToCentimeters(duration);
-
-  Serial.print(duration);
-  Serial.println(" us");
-  //Serial.print(distance);
-  //Serial.println(" cm");
+  if(duration==0){//ultrasonic err : sensor jammed
+    tone(TONE_PIN,7000,300);
+    
+    pinMode(US_ECHO_PIN, OUTPUT);
+    digitalWrite(US_ECHO_PIN, LOW);
+    delay(150);//sensor needs 150ms to reset
+    pinMode(US_ECHO_PIN, INPUT);
+    
+    tone(TONE_PIN,8800,300);
+  }else{
+    // convert the time into a distance
+    distance=microsecondsToCentimeters(duration);
+  
+    Serial.print(duration);
+    Serial.print(" us - ");
+    Serial.print(distance);
+    Serial.println(" cm");
+  }
 
   delay(100);
 }
 
 unsigned long microsecondsToCentimeters(unsigned long microseconds){
-  // see HC-SR04 documentation
-  return microseconds ;/// 58;
+  // see HC-SR04 documentation for pulse time <> distance ratio
+  return microseconds/58.0;
 }
