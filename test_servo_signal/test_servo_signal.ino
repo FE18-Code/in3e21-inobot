@@ -33,12 +33,10 @@ void setup() {                                // Built in initialization block
   servoRight.attach(12);      // Attach left signal to pin 12
 
   ///////////////////////////////////////////////////////////////////////////////////
-  servoLeft.writeMicroseconds(1500);         // Pin 13 stay still
-  delay(3000);
+  
   servoLeft.writeMicroseconds(1700);         // Pin 13 stay still
   
-  servoRight.writeMicroseconds(1500);        // Pin 12 stay still
-  delay(3000);
+  
   servoRight.writeMicroseconds(1300);
   ///////////////////////////////////////////////////////////////////////////////////
   
