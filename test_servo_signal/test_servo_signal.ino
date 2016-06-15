@@ -1,111 +1,59 @@
-#include <Servo.h>          // Include servo library
+#include "RobotServo.h"
 
-Servo servoLeft;            // Declare left servo
-Servo servoRight;           // Declare right servo
+const int SERVO_LEFT_PIN=11;
+const int SERVO_RIGHT_PIN=12;
+const int LED13_PIN=13;//captain obvious will rule the world !
 
-int servos_vitesse;
-const int SERVO_VITESSE_STOP=1500;
+//servos
+RobotServo rServoLeft;//(SERVO_LEFT_PIN,false);
+RobotServo rServoRight;
 
-void setup() {                                // Built in initialization block
- 
-  // servos init
-  servoLeft.attach(13);      // Attach left signal to pin 13
-  servoRight.attach(12);      // Attach left signal to pin 12
+void setup() {
+  pinMode(LED13_PIN, OUTPUT);
+  digitalWrite(LED13_PIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(450);              // wait for a second
+  digitalWrite(LED13_PIN, LOW);    // turn the LED off by making the voltage LOW
+  delay(50);              // wait for a second
 
-//  // définition du sens
-//  servoLeft.writeMicroseconds(400); // .4 ms stay-still signal 
-//  servoRight.writeMicroseconds(400); // .4 ms stay-still signal
-//
-//  delay(3000);
-//
-//  // définition du sens
-//  servoLeft.writeMicroseconds(2300); // 2.3 ms stay-still signal
-//  servoRight.writeMicroseconds(2300); // 2.3 ms stay-still signal
-//
-//  delay(3000);
-//
-//  // définition du sens
-//  servoLeft.writeMicroseconds(1500);         // Pin 13 stay still
-//  servoRight.writeMicroseconds(1500);        // Pin 12 stay still
-//
-//
-//  delay(3000);
- 
+  rServoLeft.init(SERVO_LEFT_PIN,false);
+  rServoRight.init(SERVO_RIGHT_PIN,true);
 }//setup
 
-void loop(){                                 // Main loop auto-repeats
+void loop(){
   servo_stop();
-  
-  servos_setVitesse(50);//vitesse 1500+-200
-  
-  delay(4000);
-  
-  tout_droit();
-  
-  delay(2000);
-  
-  servo_stop();
-  
-  delay(3000);
-  
-  servos_setVitesse(200);
-  
-  droite();
-  
-  servos_setVitesse(50);
-  
   delay(500);
   
-  servo_stop();
+  /* tout_droit(); */
+  rServoLeft.s_forward(50);
+  rServoRight.s_forward(50);
   
+  /* gauche(); */
+  rServoLeft.s_forward(200);
+  rServoRight.s_stop();
+  delay(500);
+
+  /* droite(); */
+  rServoLeft.s_stop();
+  rServoRight.s_forward(200);
+  delay(500);
+  
+  /* tout_droit(); */
+  rServoLeft.s_forward(100);
+  rServoRight.s_forward(100);
+  led();
   delay(3000);
-  
-  gauche();
-  
-  delay(1000);
-  
-  
 
 }//loop
 
 void servo_stop(){
-  servoLeft.writeMicroseconds(SERVO_VITESSE_STOP);         // Pin 13 stay still
-  servoRight.writeMicroseconds(SERVO_VITESSE_STOP);        // Pin 12 stay still
- }
- 
- void tout_droit(){
-  servoLeft.writeMicroseconds(SERVO_VITESSE_STOP+servos_vitesse);         // 1.7 ms -> counterclockwise
-  servoRight.writeMicroseconds(SERVO_VITESSE_STOP-servos_vitesse);        // 1.3 ms -> clockwise
-  //range = 1300 - 1700
- }
+  rServoLeft.s_stop();
+  rServoRight.s_stop();
+}
 
-void droite(){
-  servoLeft.writeMicroseconds(SERVO_VITESSE_STOP+servos_vitesse); // 2.3 ms stay-still signal
-  servoRight.writeMicroseconds(SERVO_VITESSE_STOP+servos_vitesse); // 2.3 ms stay-still signal
-  
- }
-  
-void gauche(){
-  servoLeft.writeMicroseconds(SERVO_VITESSE_STOP-servos_vitesse); // 2.3 ms stay-still signal
-  servoRight.writeMicroseconds(SERVO_VITESSE_STOP-servos_vitesse); // 2.3 ms stay-still signal
-  
- }
- 
- int servos_setVitesse(int vitesse){
-   int retVal=-1;
-   
-   if(vitesse>200){
-     vitesse=200;// trop grand
-     retVal=-2;// out of range
-   }else if(vitesse<0){
-     vitesse=0;// trop petit
-     retVal=-2;// out of range
-   }
-   
-   servos_vitesse=vitesse;
-   
-   
-   return retVal;
- }
- 
- 
+void led(){
+  digitalWrite(LED13_PIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(450);              // wait for a second
+  digitalWrite(LED13_PIN, LOW);    // turn the LED off by making the voltage LOW
+  delay(50);              // wait for a second  
+}
+
