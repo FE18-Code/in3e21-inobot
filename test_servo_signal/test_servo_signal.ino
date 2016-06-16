@@ -19,13 +19,20 @@ void setup() {
   digitalWrite(LED13_PIN, LOW);    // turn the LED off by making the voltage LOW
   delay(50);              // wait for a second
 
+  us_init();
   rServoLeft.init(SERVO_LEFT_PIN,false);
   rServoRight.init(SERVO_RIGHT_PIN,true);
+  Serial.begin(9600);
 }//setup
 
 void loop(){
+  long us_distance;
   servo_stop();
   delay(500);
+  
+  us_distance=get_us_distance();
+  Serial.print("Distance : ");
+  Serial.println(us_distance);
   
   /* tout_droit(); */
   rServoLeft.s_forward(50);
