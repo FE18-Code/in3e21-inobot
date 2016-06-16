@@ -1,7 +1,11 @@
+#include <Servo.h>
 #include "RobotServo.h"
 
-const int SERVO_LEFT_PIN=11;
-const int SERVO_RIGHT_PIN=12;
+const int TONE_PIN=4;//buzzer
+const int US_TRIG_PIN=5;//ultrasonic input
+const int US_ECHO_PIN=6;//ultrasonic output
+const int SERVO_LEFT_PIN=11;//servo
+const int SERVO_RIGHT_PIN=12;//servo
 const int LED13_PIN=13;//captain obvious will rule the world !
 
 //servos
