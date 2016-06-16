@@ -1,14 +1,15 @@
+#define IR_FREQ 38000
+
 const int TONE_PIN=4;
 const int IR_LED_LEFT=9;
 const int IR_RCV_LEFT=10;
 const int IR_LED_RIGHT=2;
 const int IR_RCV_RIGHT=3;
 
-int irDetect(int irLedPin, int irReceiverPin, long frequency){
-  tone(irLedPin, frequency, 8);
-  delay (1);
+int irDetect(int irLedPin, int irReceiverPin){
+  tone(irLedPin, IR_FREQ, 8);
+  delay(1);
   return digitalRead(irReceiverPin);
-//  delay(1);
 }
 
 void setup() {
@@ -28,12 +29,12 @@ void setup() {
 
 
 void loop() {
-  int irLeft = irDetect(IR_LED_LEFT, IR_RCV_LEFT, 38000); // left sensor 
+  int irLeft = irDetect(IR_LED_LEFT, IR_RCV_LEFT); // left sensor 
   Serial.print(irLeft);  
   Serial.println(" Capteur gauche ");
   delay(100); 
   
-  int irRight = irDetect(IR_LED_RIGHT, IR_RCV_RIGHT, 38000); // right sensor 
+  int irRight = irDetect(IR_LED_RIGHT, IR_RCV_RIGHT); // right sensor 
   Serial.print(irRight); 
   Serial.println(" Capteur droite ");
   delay(100); 
