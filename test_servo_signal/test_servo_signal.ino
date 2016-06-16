@@ -26,33 +26,43 @@ void setup() {
 }//setup
 
 void loop(){
-  long us_distance;
-  servo_stop();
-  delay(500);
+  int us_distance;
+  //servo_stop();
+  delay(50);
   
-  us_distance=get_us_distance();
+  us_distance=(int)get_us_distance();
   Serial.print("Distance : ");
   Serial.println(us_distance);
   
+  if(us_distance<=5){
+    rServoLeft.s_backward(100);
+    rServoRight.s_backward(100);
+  }else{
+    rServoLeft.s_forward(50);
+    rServoRight.s_forward(50);
+  }
+  /* droite(); */
+  //rServoLeft.s_backward(200);
+  //rServoRight.s_forward(200);
+  //delay(1000); 
+  //}else{
+      
   /* tout_droit(); */
-  rServoLeft.s_forward(50);
-  rServoRight.s_forward(50);
+  //rServoLeft.s_forward(50);
+  //rServoRight.s_forward(50);
+  //delay(1000);
   
   /* gauche(); */
-  rServoLeft.s_forward(200);
-  rServoRight.s_stop();
-  delay(500);
+  //rServoLeft.s_forward(200);
+  //rServoRight.s_stop();
+  //delay(500);
 
   /* droite(); */
-  rServoLeft.s_stop();
-  rServoRight.s_forward(200);
-  delay(500);
-  
-  /* tout_droit(); */
-  rServoLeft.s_forward(100);
-  rServoRight.s_forward(100);
-  led();
-  delay(3000);
+  //rServoLeft.s_stop();
+  //rServoRight.s_forward(200);
+  //delay(500);
+  //}
+
 
 }//loop
 
