@@ -18,25 +18,21 @@ const int SERVO_RIGHT_PIN = 12; //servo
 const int LED13_PIN = 13; //captain obvious will rule the world !
 
 //servos
-RobotServo rServoLeft;//(SERVO_LEFT_PIN,false);
+RobotServo rServoLeft;
 RobotServo rServoRight;
 
 void setup() {
   pinMode(LED13_PIN, OUTPUT);
-  digitalWrite(LED13_PIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(450);              // wait for a second
-  digitalWrite(LED13_PIN, LOW);    // turn the LED off by making the voltage LOW
-  delay(50);              // wait for a second
+  led();
 
-  us_init();
-  stm_state = STATE_STOP;
+  us_init(); //ultrasonic sensor init
+  stm_state = STATE_INIT;
   rServoLeft.init(SERVO_LEFT_PIN, false);
   rServoRight.init(SERVO_RIGHT_PIN, true);
   Serial.begin(9600);
 }//setup
 
 void loop() {
-  //servo_stop();
   delay(50);
 
   switch (stm_state) {
@@ -84,7 +80,6 @@ void loop() {
     case STATE_CHECK_ULTRAS:
 
       distance();
-      stm_state = STATE_CHECK_ULTRAS;
 
       break;
 
@@ -95,7 +90,6 @@ void loop() {
       break;
   }
 
-
 }
 
 void distance() {
@@ -104,7 +98,7 @@ void distance() {
   Serial.print("Distance : ");
   Serial.println(us_distance);
   if (us_distance <= 5) {
-    stm_state = STATE_BACKWARD;
+    stm_state = STATE_RIGHT;
   } else {
     stm_state = STATE_FORWARD;
   }
@@ -137,9 +131,6 @@ void gauche() {
 
 }
 
-
-//}//loop
-
 void servo_stop() {
   rServoLeft.s_stop();
   rServoRight.s_stop();
@@ -147,8 +138,8 @@ void servo_stop() {
 
 void led() {
   digitalWrite(LED13_PIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(450);              // wait for a second
+  delay(450);              // wait
   digitalWrite(LED13_PIN, LOW);    // turn the LED off by making the voltage LOW
-  delay(50);              // wait for a second
+  delay(50);              // wait
 }
 
