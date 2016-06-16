@@ -19,7 +19,7 @@ void us_init(){
   pinMode(US_ECHO_PIN, INPUT);
 }
 
-long get_us_distance(){
+long get_us_distance(boolean buzzer_output){
   // establish variables for duration of the ping,
   // and the distance result in inches and centimeters:
   unsigned long duration, distance;
@@ -38,14 +38,18 @@ long get_us_distance(){
   duration=pulseIn(US_ECHO_PIN, HIGH);
 
   if(duration==0){//ultrasonic err : sensor jammed
-    tone(TONE_PIN,7000,300);
+    if(buzzer_output==true){
+      tone(TONE_PIN,7000,300);
+    }
     
     pinMode(US_ECHO_PIN, OUTPUT);
     digitalWrite(US_ECHO_PIN, LOW);
     delay(150);//sensor needs 150ms to reset
     pinMode(US_ECHO_PIN, INPUT);
     
-    tone(TONE_PIN,8800,300);
+    if(buzzer_output==true){
+      tone(TONE_PIN,8800,300);
+    }
   }else{
     // convert the time into a distance
     distance=microsecondsToCentimeters(duration);
