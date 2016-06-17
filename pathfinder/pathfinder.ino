@@ -1,6 +1,7 @@
 #include <Servo.h>
 #include "RobotServo.h"
 
+// state machine
 #define STATE_INIT 0
 #define STATE_STOP 1
 #define STATE_FORWARD 2
@@ -8,11 +9,16 @@
 #define STATE_RIGHT 4
 #define STATE_LEFT 5
 #define STATE_CHECK_ULTRAS 6
+
 int stm_state;
 
 const int TONE_PIN = 4; //buzzer
 const int US_TRIG_PIN = 5; //ultrasonic input
 const int US_ECHO_PIN = 6; //ultrasonic output
+const int IR_LED_LEFT=9; //ir left input
+const int IR_RCV_LEFT=10; //ir left output
+const int IR_LED_RIGHT=2; //ir right input
+const int IR_RCV_RIGHT=3; //ir right output
 const int SERVO_LEFT_PIN = 11; //servo
 const int SERVO_RIGHT_PIN = 12; //servo
 const int LED13_PIN = 13; //captain obvious will rule the world !
@@ -26,9 +32,11 @@ void setup() {
   led();
 
   us_init(); //ultrasonic sensor init
-  stm_state = STATE_INIT;
+  ir_init(); //ir sensors init
   rServoLeft.init(SERVO_LEFT_PIN, false);
   rServoRight.init(SERVO_RIGHT_PIN, true);
+
+  stm_state = STATE_INIT;
   Serial.begin(9600);
 }//setup
 
